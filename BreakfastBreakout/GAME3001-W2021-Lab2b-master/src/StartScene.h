@@ -5,7 +5,9 @@
 #include "Scene.h"
 #include "Label.h"
 #include "ship.h"
+#include "Player.h"
 #include "Button.h"
+#include "ResumeButton.h"
 
 class StartScene final : public Scene
 {
@@ -26,7 +28,8 @@ private:
 
 	Ship* m_pShip{};
 
-	Button* m_pStartButton;
+	Button* m_pResumeGameButton;
+	Button* m_pNewGameButton;
 };
 
 #endif /* defined (__START_SCENE__) */

@@ -1,20 +1,20 @@
 #pragma once
-#ifndef __BUTTON__
-#define __BUTTON__
+#ifndef __RESUMEBUTTON__
+#define __RESUMEBUTTON__
 
 #include "DisplayObject.h"
 #include <SDL.h>
 #include "UIControl.h"
 
-class Button : public UIControl
+class ResumeButton : public UIControl
 {
 public:
-	explicit Button(const std::string& image_path = "../Assets/textures/StartButton.png", 
-		std::string button_name = "startButton", 
-		GameObjectType type = START_BUTTON, 
+	explicit ResumeButton(const std::string& image_path = "../Assets/textures/ResumeButton.png",
+		std::string button_name = "startButton",
+		GameObjectType type = START_BUTTON,
 		glm::vec2 position = glm::vec2(0.0f, 0.0f), bool is_centered = true);
-	
-	~Button();
+
+	~ResumeButton();
 
 	// Life Cycle Events
 	void draw() override;
@@ -24,7 +24,7 @@ public:
 	// button setters
 	void setAlpha(Uint8 alpha);
 	void setActive(bool value);
-	
+
 private:
 	Uint8 m_alpha;
 	std::string m_name;

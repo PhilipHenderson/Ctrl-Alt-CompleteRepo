@@ -168,6 +168,7 @@
     <ClCompile Include="..\src\Hazard.cpp" />
     <ClCompile Include="..\src\Obstacle.cpp" />
     <ClCompile Include="..\src\Platform.cpp" />
+    <ClCompile Include="..\src\ResumeButton.cpp" />
     <ClCompile Include="..\src\SpaceShip.cpp" />
     <ClCompile Include="..\src\Sprite.cpp" />
     <ClCompile Include="..\src\UIControl.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="..\src\Hazard.h" />
     <ClInclude Include="..\src\Obstacle.h" />
     <ClInclude Include="..\src\Platform.h" />
+    <ClInclude Include="..\src\ResumeButton.h" />
     <ClInclude Include="..\src\SoundType.h" />
     <ClInclude Include="..\src\SpaceShip.h" />
     <ClInclude Include="..\src\Sprite.h" />
