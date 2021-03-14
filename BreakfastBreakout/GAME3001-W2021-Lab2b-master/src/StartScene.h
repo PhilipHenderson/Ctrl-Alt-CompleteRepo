@@ -5,9 +5,14 @@
 #include "Scene.h"
 #include "Label.h"
 #include "ship.h"
-#include "Player.h"
 #include "Button.h"
 #include "ResumeButton.h"
+#include "LoadButton.h"
+#include "QuitButton.h"
+#include "NGButton.h"
+#include "Background.h"
+#include "MenuBG.h"
+
 
 class StartScene final : public Scene
 {
@@ -28,8 +33,11 @@ private:
 
 	Ship* m_pShip{};
 
-	Button* m_pResumeGameButton;
-	Button* m_pNewGameButton;
+	LoadButton* m_pLoadButton;
+	QuitButton* m_pQuitButton;
+	NewGameButton* m_pNewGameButton;
+	ResumeButton* m_pResumeGameButton;
+	MenuBackground* m_pBackground;
 };
 
 #endif /* defined (__START_SCENE__) */

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef __RESUMEBUTTON__
-#define __RESUMEBUTTON__
+#ifndef __RESUME_BUTTON__
+#define __RESUME_BUTTON__
 
 #include "DisplayObject.h"
 #include <SDL.h>
@@ -9,9 +9,9 @@
 class ResumeButton : public UIControl
 {
 public:
-	explicit ResumeButton(const std::string& image_path = "../Assets/textures/ResumeButton.png",
-		std::string button_name = "startButton",
-		GameObjectType type = START_BUTTON,
+	explicit ResumeButton(const std::string& image_path = "../Assets/textures/resumeButton.png",
+		std::string button_name = "resumeButton",
+		GameObjectType type = RESUME_BUTTON,
 		glm::vec2 position = glm::vec2(0.0f, 0.0f), bool is_centered = true);
 
 	~ResumeButton();
@@ -32,4 +32,5 @@ private:
 	bool m_active;
 };
 
-#endif /* defined (__BUTTON__) */
+#endif /* defined (__RESUME_BUTTON__) */
+
