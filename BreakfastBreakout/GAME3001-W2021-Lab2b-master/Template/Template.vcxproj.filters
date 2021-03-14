@@ -162,6 +162,9 @@
     <ClCompile Include="..\src\QuitButton.cpp">
       <Filter>UI Objects</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\EndBG.cpp">
+      <Filter>Game Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\StartScene.h">
@@ -334,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="..\src\QuitButton.h">
       <Filter>UI Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\EndBG.h">
+      <Filter>Game Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
