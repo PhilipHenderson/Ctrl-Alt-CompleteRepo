@@ -3,6 +3,9 @@
 #include <algorithm>
 
 
+#include "Game.h"
+#include "SceneState.h"
+
 
 int CollisionManager::squaredDistance(const glm::vec2 p1, const glm::vec2 p2)
 {
@@ -100,7 +103,7 @@ bool CollisionManager::AABBCheck(GameObject* object1, GameObject* object2)
 	return false;
 }
 
-bool CollisionManager::PlatformCheck(Player* object1, GameObject* object2)
+bool CollisionManager::PlatformCheck(Player* object1, GameObject* object2, Camera* camera)
 {
 	// prepare relevant variables
 	const auto p1 = object1->getTransform()->position;
@@ -117,9 +120,7 @@ bool CollisionManager::PlatformCheck(Player* object1, GameObject* object2)
 		p1.y + p1Height > p2.y
 		)
 	{
-		if (!object2->getRigidBody()->isColliding) {
-
-			object2->getRigidBody()->isColliding = true;
+		
 
 			switch (object2->getType()) {
 			case TARGET:
@@ -138,44 +139,44 @@ bool CollisionManager::PlatformCheck(Player* object1, GameObject* object2)
 				//std::cout << "hit platform" << std::endl;
 				//object1->setGrounded(true);
 				//std::cout << "hit platform" << std::endl;
-				if ((object1->getTransform()->position.y + object1->getHeight() - object1->getRigidBody()->velocity.y <= object2->getTransform()->position.y))
+				if ((object1->getTransform()->position.y + object1->getHeight() + camera->getRigidBody()->velocity.y <= object2->getTransform()->position.y))
 				{
+					std::cout << "worked" << std::endl;
 					object1->setGrounded(true);
-					object1->getRigidBody()->velocity.y = 0;
-					object1->getTransform()->position.y = object2->getTransform()->position.y;
-					object1->getTransform()->position.y = object2->getTransform()->position.y - object1->getHeight();
+					camera->getRigidBody()->velocity.y = 0;
+					camera->getTransform()->position.y = object1->getTransform()->position.y + object1->getHeight() - object2->getOffset().y;
+					//object1->getTransform()->position.y = object2->getTransform()->position.y - object1->getHeight();
 				}
-				else if (object1->getTransform()->position.y - object1->getRigidBody()->velocity.y >= object2->getTransform()->position.y + object2->getHeight())
+				else if (object1->getTransform()->position.y + camera->getRigidBody()->velocity.y >= object2->getTransform()->position.y + object2->getHeight())
 				{
-					object1->getRigidBody()->velocity.y = 0;
-					object1->getTransform()->position.y = (object2->getTransform()->position.y + object2->getHeight());
+					camera->getRigidBody()->velocity.y = 0;
+					camera->getTransform()->position.y = object1->getTransform()->position.y - object2->getOffset().y - object2->getHeight() - 3;
+					//object1->getTransform()->position.y = (object2->getTransform()->position.y + object2->getHeight());
 				}
-				else if ((object1->getTransform()->position.x + object1->getWidth() - object1->getRigidBody()->velocity.x > object2->getTransform()->position.x) && object1->getTransform()->position.x + object1->getWidth() - object1->getRigidBody()->velocity.x <= object2->getTransform()->position.x + (object2->getWidth() / 2))
+				else if ((object1->getTransform()->position.x + object1->getWidth() + object1->getRigidBody()->velocity.x > object2->getTransform()->position.x) && object1->getTransform()->position.x + object1->getWidth() + object1->getRigidBody()->velocity.x <= object2->getTransform()->position.x + (object2->getWidth() / 2))
 				{
 					std::cout << "touching the left side wall" << std::endl;
 					object1->setRight(true);
 					//object1->getTransform()->position.y = 50;
-					object1->getRigidBody()->velocity.x = 0;
-					object1->getTransform()->position.x = (object2->getTransform()->position.x - object1->getWidth() - 3);
+					camera->getRigidBody()->velocity.x = 0;
+					camera->getTransform()->position.x = object1->getTransform()->position.x - object2->getOffset().x + object1->getWidth();
+					//object1->getTransform()->position.x = (object2->getTransform()->position.x - object1->getWidth() - 3);
 				}
 				else if ((object1->getTransform()->position.x - object1->getRigidBody()->velocity.x < object2->getTransform()->position.x + object2->getWidth()))
 				{
 					std::cout << "touching the right side wall" << std::endl;
 					object1->setLeft(true);
 					//object1->getTransform()->position.y = 50;
-					object1->getRigidBody()->velocity.x = 0;
-					object1->getTransform()->position.x = (object2->getTransform()->position.x + object2->getWidth() + 3);
+					camera->getRigidBody()->velocity.x = 0;
+					camera->getTransform()->position.x = object1->getTransform()->position.x - object2->getOffset().x - object2->getWidth();
+					//object1->getTransform()->position.x = (object2->getTransform()->position.x + object2->getWidth() + 3);
 				}
 				break;
 			}
 
 			//std::cout << "exiting true" << std::endl;
 			return true;
-		}
-		object1->setRight(false);
-		object1->setLeft(false);
-		object1->setGrounded(false);
-		return false;
+
 	}
 	else
 	{
@@ -189,7 +190,7 @@ bool CollisionManager::PlatformCheck(Player* object1, GameObject* object2)
 	return false;
 }
 
-bool CollisionManager::HazardCheck(Player* object1, GameObject* object2)
+bool CollisionManager::HazardCheck(Player* object1, GameObject* object2, Camera* camera)
 {
 	// prepare relevant variables
 	const auto p1 = object1->getTransform()->position;
@@ -217,7 +218,8 @@ bool CollisionManager::HazardCheck(Player* object1, GameObject* object2)
 			break;
 		case HAZARD:
 			std::cout << "hit hazard" << std::endl;
-			object1->getTransform()->position = glm::vec2(50.0f, 0.0f);
+			camera->getTransform()->position = glm::vec2(0.0f, 0.0f);
+			TheGame::Instance()->cleanSceneState(PLAY_SCENE);
 			break;
 				
 		default:
@@ -266,7 +268,7 @@ bool CollisionManager::ButterCheck(Player* object1, Butter* object2)
 			std::cout << "hit butter" << std::endl;
 			object2->setHideTimer(200);
 			object1->setButterTime(200);
-			object2->getTransform()->position.x = -100;
+			object2->setOffset(object2->getOffset());
 			break;
 
 		default:
@@ -285,75 +287,7 @@ bool CollisionManager::ButterCheck(Player* object1, Butter* object2)
 	return false;
 }
 
-bool CollisionManager::PlatformCheckSide(Player* object1, GameObject* object2)
-{
-	// prepare relevant variables
-	const auto p1 = object1->getTransform()->position;
-	const auto p2 = object2->getTransform()->position;
-	const float p1Width = object1->getWidth();
-	const float p1Height = object1->getHeight();
-	const float p2Width = object2->getWidth();
-	const float p2Height = object2->getHeight();
 
-	if (
-		p1.x < p2.x + p2Width &&
-		p1.x + p1Width > p2.x &&
-		p1.y < p2.y + p2Height &&
-		p1.y + p1Height > p2.y
-		)
-	{
-		if (!object2->getRigidBody()->isColliding) {
-
-			object2->getRigidBody()->isColliding = true;
-
-			switch (object2->getType()) {
-			case TARGET:
-				std::cout << "Collision with Target!" << std::endl;
-				SoundManager::Instance().playSound("yay", 0);
-				break;
-			case OBSTACLE:
-				std::cout << "Collision with Obstacle!" << std::endl;
-				SoundManager::Instance().playSound("yay", 0);
-				break;
-			default:
-				std::cout << "hit platform" << std::endl;
-				//object1->setGrounded(true);
-				//std::cout << "hit platform" << std::endl;
-				if ((object1->getTransform()->position.x + object1->getWidth() - object1->getRigidBody()->velocity.x >= object2->getTransform()->position.x) && object1->getTransform()->position.x + object1->getWidth() - object1->getRigidBody()->velocity.x <= object2->getTransform()->position.x + (object2->getWidth() / 2))
-				{
-					std::cout << "touching the left side wall" << std::endl;
-					object1->setRight(true);
-					object1->getRigidBody()->velocity.x = 0;
-					object1->getTransform()->position.x = (object2->getTransform()->position.x - object1->getWidth());
-				}
-				else if ((object1->getTransform()->position.x - object1->getRigidBody()->velocity.x <= object2->getTransform()->position.x + object2->getWidth()))
-				{
-					std::cout << "touching the right side wall" << std::endl;
-					object1->setLeft(true);
-					object1->getRigidBody()->velocity.x = 0;
-					object1->getTransform()->position.y = 50;
-					object1->getTransform()->position.x = (object2->getTransform()->position.x + object2->getWidth());
-				}
-				break;
-			}
-
-			//std::cout << "exiting true" << std::endl;
-			return true;
-		}
-		object1->setRight(false);
-		object1->setLeft(false);
-		return false;
-	}
-	else
-	{
-		object1->setRight(false);
-		object1->setLeft(false);
-
-		return false;
-	}
-
-	return false;
-}
 
 bool CollisionManager::lineLineCheck(const glm::vec2 line1_start, const glm::vec2 line1_end, const glm::vec2 line2_start, const glm::vec2 line2_end)
 {

@@ -1,20 +1,20 @@
 #pragma once
-#ifndef __RESUME_BUTTON__
-#define __RESUME_BUTTON__
+#ifndef __QUIT_BUTTON__
+#define __QUIT_BUTTON__
 
 #include "DisplayObject.h"
 #include <SDL.h>
 #include "UIControl.h"
 
-class ResumeButton : public UIControl
+class QuitButton : public UIControl
 {
 public:
-	explicit ResumeButton(const std::string& image_path = "../Assets/textures/resumeButton.png",
-		std::string button_name = "resumeButton",
-		GameObjectType type = RESUME_BUTTON,
+	explicit QuitButton(const std::string& image_path = "../Assets/textures/quitButton.png",
+		std::string button_name = "quitButton",
+		GameObjectType type = QUIT_BUTTON,
 		glm::vec2 position = glm::vec2(0.0f, 0.0f), bool is_centered = true);
 
-	~ResumeButton();
+	~QuitButton();
 
 	// Life Cycle Events
 	void draw() override;
@@ -32,5 +32,5 @@ private:
 	bool m_active;
 };
 
-#endif /* defined (__RESUME_BUTTON__) */
+#endif /* defined (__QUIT_BUTTON__) */
 

@@ -1,15 +1,15 @@
 #pragma once
-#ifndef __BUTTER__
-#define __BUTTER__
+#ifndef __MENU_BACKGROUND__
+#define __MENU_BACKGROUND__
 
 #include "DisplayObject.h"
 #include "TextureManager.h"
 
-class Butter final : public DisplayObject
+class MenuBackground final : public DisplayObject
 {
 public:
-	Butter();
-	~Butter();
+	MenuBackground();
+	~MenuBackground();
 
 	// Life Cycle Methods
 	virtual void draw() override;
@@ -17,13 +17,11 @@ public:
 	virtual void clean() override;
 
 	// setters
-	void setHideTimer(int time);
-	int getHideTimer();
+
 
 
 private:
-	int m_hideTimer;
-	float m_xPos;
+
 };
 
-#endif
+#endif#pragma once

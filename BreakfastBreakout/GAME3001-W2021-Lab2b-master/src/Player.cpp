@@ -38,7 +38,7 @@ void Player::draw()
 
 void Player::update()
 {
-	if (m_grounded == false)
+	/*if (m_grounded == false)
 	{
 		getRigidBody()->velocity += glm::vec2(0, 0.8);
 	}
@@ -46,7 +46,7 @@ void Player::update()
 
 	if (getRigidBody()->velocity.x >= 9)
 		getRigidBody()->velocity.x = 9;
-
+		*/
 	if (m_butterTime > 0)
 	{
 		m_butter = true;

@@ -6,7 +6,7 @@
 
 Ship::Ship() : m_maxSpeed(10.0f)
 {
-	TextureManager::Instance()->load("../Assets/textures/menu2.png","ship");
+	TextureManager::Instance()->load("../Assets/textures/menu3.png","ship");
 
 	auto size = TextureManager::Instance()->getTextureSize("ship");
 	setWidth(size.x);
